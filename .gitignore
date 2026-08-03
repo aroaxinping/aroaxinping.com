@@ -1,0 +1,38 @@
+# ── Dependencias y build ──────────────────────────────────────────────────
+node_modules/
+dist/
+.astro/
+.vercel/
+.DS_Store
+
+# ── Entornos y secretos ───────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ── Datos de negocio: nunca al repo ───────────────────────────────────────
+# Este repo puede acabar siendo público. Nada de tarifas, listas de marcas,
+# analíticas en crudo ni estrategia de contenido — el corpus del modelo es lo
+# único personal que sí se publica, y está escrito para publicarse.
+Brand_Collabs_List.docx
+ESTRATEGIA-BLOG.md
+*_Analytics_*.xlsx
+Ideas_Videos_*.xlsx
+tiktok-analytics-*/
+data-playground/
+*.pkl
+
+# ── Cuadernos y trabajo suelto ────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+sync_notes_to_excel.py
+sync_notes_watcher.sh
+.notes_hash
+.sync_notes*.log
+
+# ── Voz: la referencia es material personal, los MP3 generados sí se suben ─
+model/voz/referencia*.wav
+model/voz/referencia*.mp3
+model/voz/.cache/

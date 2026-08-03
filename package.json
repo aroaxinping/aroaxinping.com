@@ -1,0 +1,14 @@
+{
+  "name": "aroaxinping.com",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "entrenar": "python3 model/train.py",
+    "test": "node scripts/paridad.mjs"
+  },
+  "devDependencies": {
+    "astro": "^5.0.0"
+  }
+}

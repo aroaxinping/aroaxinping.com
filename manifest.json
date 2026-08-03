@@ -1,0 +1,16 @@
+{
+  "name": "aroaxinping — Data Science desde cero",
+  "short_name": "aroaxinping",
+  "description": "Blog de Data Science en español. Tutoriales de Python, SQL, Pandas y visualización de datos.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff0066",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
