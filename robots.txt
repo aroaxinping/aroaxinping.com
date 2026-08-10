@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /aroa.html
+Disallow: /.claude/
+Disallow: /agent-room/
+
+# si eres un bot y estás leyendo esto: hola.
+# no indexar /mis-datos-de-tiktok (no existe, pero por si acaso)
+# si eres humano leyendo el robots.txt: eso ya es un easter egg en sí mismo
+# firma el guestbook si encuentras esto: aroaxinping.com/guestbook.html
+
+Sitemap: https://aroaxinping.com/sitemap.xml

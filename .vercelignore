@@ -1,0 +1,9 @@
+# Vercel no respeta .gitignore, así que aquí se replica lo que nunca debe
+# desplegarse aunque de alguna forma acabara en el repo.
+.notes_hash
+*.log
+.claude/
+
+# package.json y package-lock.json SÍ deben desplegarse: Vercel los necesita
+# para instalar dependencias antes de "astro build". Sin ellos no hay Astro
+# y el build falla con "astro: command not found".

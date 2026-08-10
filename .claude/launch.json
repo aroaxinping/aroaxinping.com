@@ -1,0 +1,90 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "static-site",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3000"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "astro-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "4321"
+      ],
+      "port": 4321
+    },
+    {
+      "name": "dedicatorias",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8090",
+        "-d",
+        "/Users/aroaxinping/dedicatorias"
+      ],
+      "port": 8090
+    },
+    {
+      "name": "data-playground",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8766",
+        "-d",
+        "/Users/aroaxinping/data-playground-gasolina"
+      ],
+      "port": 8766
+    },
+    {
+      "name": "tokpipe-dashboard",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8765",
+        "-d",
+        "/Users/aroaxinping/tokpipe/docs"
+      ],
+      "port": 8765
+    },
+    {
+      "name": "agent-room",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8091",
+        "-d",
+        "/Users/aroaxinping/aroaxinping.com/agent-room"
+      ],
+      "port": 8091
+    },
+    {
+      "name": "redmoon-dashboard",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "streamlit",
+        "run",
+        "/Users/aroaxinping/redmoon/dashboard.py",
+        "--server.headless",
+        "true",
+        "--server.port",
+        "8501"
+      ],
+      "port": 8501
+    }
+  ]
+}
