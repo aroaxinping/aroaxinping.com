@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <pattern id="dots" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="15" cy="15" r="0.5" fill="#333"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#000"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <!-- Accent line -->
+  <rect x="80" y="250" width="60" height="4" rx="2" fill="#ff0066"/>
+  <!-- Title -->
+  <text x="80" y="320" font-family="system-ui, sans-serif" font-size="72" font-weight="800" fill="#fff">about me</text>
+  <!-- Subtitle -->
+  <text x="80" y="370" font-family="system-ui, sans-serif" font-size="24" fill="#999">datos, diseno y ganas de crear</text>
+  <!-- Domain -->
+  <text x="80" y="560" font-family="monospace" font-size="16" fill="#666">aroaxinping.com</text>
+  <!-- Sparkle decoration -->
+  <path d="M1050 100 C1052 130 1060 138 1090 140 C1060 142 1052 150 1050 180 C1048 150 1040 142 1010 140 C1040 138 1048 130 1050 100Z" fill="#ff0066" opacity="0.3"/>
+  <path d="M1100 450 C1101 465 1105 469 1120 470 C1105 471 1101 475 1100 490 C1099 475 1095 471 1080 470 C1095 469 1099 465 1100 450Z" fill="#ff0066" opacity="0.2"/>
+</svg>
