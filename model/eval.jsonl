@@ -1,0 +1,74 @@
+{"pregunta": "y tú quién eres exactamente", "esperado": "identidad"}
+{"pregunta": "holaaa", "esperado": "identidad"}
+{"pregunta": "ey, que tal", "esperado": "identidad"}
+{"pregunta": "esto lo mueve chatgpt por detrás?", "esperado": "que-es-aroa-1"}
+{"pregunta": "explicame como esta construido este chat", "esperado": "como-funciona"}
+{"pregunta": "por que no montaste esto con un modelo de lenguaje grande", "esperado": "por-que-tfidf"}
+{"pregunta": "resumeme tu carrera academica", "esperado": "trayectoria"}
+{"pregunta": "que paso con la carrera de arte, la terminaste?", "esperado": "dejar-bellas-artes"}
+{"pregunta": "llegaste a ejercer de dietista?", "esperado": "fp-dietetica"}
+{"pregunta": "en que momento te dio por los datos", "esperado": "descubrir-data-science"}
+{"pregunta": "porque elegiste estudiar en la uoc", "esperado": "por-que-uoc"}
+{"pregunta": "no te daba por hacer un master en vez del grado", "esperado": "no-master"}
+{"pregunta": "cuentame lo del bootcamp de ironhack", "esperado": "ironhack"}
+{"pregunta": "en que estas metida estos meses", "esperado": "que-estudias-ahora"}
+{"pregunta": "se te resiste el sql?", "esperado": "sql"}
+{"pregunta": "cuanto tiempo llevas programando en python", "esperado": "python"}
+{"pregunta": "llevas bien las mates y la estadistica", "esperado": "estadistica"}
+{"pregunta": "enseñame en que proyectos has trabajado", "esperado": "proyecto-cross-platform"}
+{"pregunta": "para que sirve tokpipe", "esperado": "tokpipe"}
+{"pregunta": "que era el dashboard de streamlit ese", "esperado": "redmoon"}
+{"pregunta": "como montaste esta pagina web", "esperado": "esta-web"}
+{"pregunta": "por que analizas tus propias redes y no otros datos", "esperado": "datos-propios"}
+{"pregunta": "de que hablas en tiktok", "esperado": "creadora-contenido"}
+{"pregunta": "cuanta gente te sigue", "esperado": "metricas"}
+{"pregunta": "que perfil tiene la gente que te ve", "esperado": "audiencia"}
+{"pregunta": "me interesa hacer una campaña con marcas contigo", "esperado": "colaboraciones"}
+{"pregunta": "para que grabas videos si estudias", "esperado": "por-que-contenido"}
+{"pregunta": "como te organizas con tantas cosas a la vez", "esperado": "compaginar"}
+{"pregunta": "sientes que no das la talla a veces", "esperado": "sindrome-impostor"}
+{"pregunta": "como reacciono tu familia al cambio", "esperado": "reaccion-entorno"}
+{"pregunta": "algun consejo para alguien que quiere empezar en datos", "esperado": "consejo-empezar"}
+{"pregunta": "te sirvio de algo haber estudiado bellas artes", "esperado": "arte-y-datos"}
+{"pregunta": "en que ciudad vives", "esperado": "barcelona"}
+{"pregunta": "estas buscando practicas o trabajo", "esperado": "buscas-trabajo"}
+{"pregunta": "dame tu correo para escribirte", "esperado": "contacto"}
+{"pregunta": "a que te quieres dedicar en el futuro", "esperado": "que-quiero-hacer"}
+{"pregunta": "que es lo que mas disfrutas de analizar datos", "esperado": "que-me-gusta-datos"}
+{"pregunta": "que cosas no sabes contestar", "esperado": "limitaciones"}
+{"pregunta": "te puedes inventar una respuesta?", "esperado": "alucinar"}
+{"pregunta": "que significa el numero de similitud que sale abajo", "esperado": "score"}
+{"pregunta": "estas guardando lo que escribo?", "esperado": "privacidad"}
+{"pregunta": "cuantos documentos tiene tu corpus", "esperado": "corpus"}
+{"pregunta": "cada cuanto te vuelven a entrenar", "esperado": "reentrenar"}
+{"pregunta": "de donde sale el nombre aroa-1", "esperado": "nombre-aroa-1"}
+{"pregunta": "cual es la capital de francia", "esperado": null}
+{"pregunta": "dame una receta de tortilla de patatas", "esperado": null}
+{"pregunta": "cuanto es 2345 por 8712", "esperado": null}
+{"pregunta": "quien gano el mundial de 2010", "esperado": null}
+{"pregunta": "escribeme un email para mi jefe pidiendo vacaciones", "esperado": null}
+{"pregunta": "asdfgh qwerty zxcvbn", "esperado": null}
+{"pregunta": "cual es el precio del bitcoin hoy", "esperado": null}
+{"pregunta": "recomiendame una serie de netflix", "esperado": null}
+{"pregunta": "como estas", "esperado": null}
+{"pregunta": "que tal estas", "esperado": null}
+{"pregunta": "como te encuentras hoy", "esperado": null}
+{"pregunta": "cual es tu color favorito", "esperado": null}
+{"pregunta": "cual es tu comida favorita", "esperado": null}
+{"pregunta": "cual es tu pelicula favorita", "esperado": null}
+{"pregunta": "que hora es", "esperado": null}
+{"pregunta": "que dia es hoy", "esperado": null}
+{"pregunta": "cuentame un chiste", "esperado": null}
+{"pregunta": "cantame una cancion", "esperado": null}
+{"pregunta": "que opinas del futbol", "esperado": null}
+{"pregunta": "tienes novio", "esperado": null}
+{"pregunta": "cuantos años tienes", "esperado": null}
+{"pregunta": "eres real", "esperado": null}
+{"pregunta": "me quieres", "esperado": null}
+{"pregunta": "que puedes hacer", "esperado": null}
+{"pregunta": "ayudame con mis deberes", "esperado": null}
+{"pregunta": "cual es el sentido de la vida", "esperado": null}
+{"pregunta": "que piensas de la politica", "esperado": null}
+{"pregunta": "gracias", "esperado": null}
+{"pregunta": "vale perfecto", "esperado": null}
+{"pregunta": "jajaja que dices", "esperado": null}
