@@ -1,0 +1,300 @@
+---
+import Base from '../layouts/Base.astro';
+import informe from '../../public/model/evaluacion.json';
+
+const m = informe.metricas;
+const { temas, matriz, histograma, resultados } = informe;
+
+const fallos = resultados.filter((r) => r.acierto === false);
+const enDominio = resultados.filter((r) => r.en_dominio);
+const fuera = resultados.filter((r) => !r.en_dominio);
+
+// Para el heatmap: la celda más alta marca el 100% de opacidad.
+const maxCelda = Math.max(...matriz.flat());
+
+// Para el histograma: altura relativa a la barra más alta de las dos series.
+const maxBarra = Math.max(...histograma.en_dominio, ...histograma.fuera);
+const umbralPct =
+  (informe.umbral / (histograma.bins.length * histograma.paso)) * 100;
+
+const pct = (n: number) => `${Math.round(n * 100)}%`;
+---
+
+<Base
+  title="evaluación — aroa-1"
+  description="Resultados completos de la evaluación de aroa-1: matriz de confusión, distribución de scores, calibración del umbral y todos los fallos."
+>
+  <section class="eval">
+    <div class="wrap">
+      <p class="eyebrow">evaluación</p>
+      <h1>Dónde acierta y dónde falla</h1>
+      <p class="lede prose">
+        Casi ningún portfolio enseña esto. Aquí está el set de evaluación
+        entero de aroa-1, con sus fallos incluidos: {enDominio.length} preguntas
+        parafraseadas (ninguna copiada del corpus de entrenamiento) y {fuera.length}
+        preguntas fuera de dominio para comprobar que sabe callarse.
+      </p>
+
+      <div class="cifras mono">
+        <div><dt>accuracy@1</dt><dd>{pct(m.accuracy_top1)}</dd></div>
+        <div><dt>cobertura</dt><dd>{pct(m.cobertura)}</dd></div>
+        <div><dt>rechazo fuera</dt><dd>{pct(m.rechazo_fuera_dominio)}</dd></div>
+        <div><dt>umbral</dt><dd>{informe.umbral}</dd></div>
+      </div>
+
+      <hr />
+
+      <!-- ═══ Histograma ═══ -->
+      <h2>Distribución de scores</h2>
+      <p class="prose">
+        Cada barra es un tramo de similitud. En verde, preguntas que sí están en
+        el corpus; en ámbar, preguntas de las que no sé nada. La línea es el
+        umbral: todo lo que cae a su izquierda recibe un «no lo sé». Las dos
+        distribuciones se solapan un poco — por eso el umbral no puede acertar
+        siempre, y por eso se elige el corte que mejor equilibra ambos errores.
+      </p>
+
+      <figure class="hist">
+        <div class="hist-barras" style={`--umbral:${umbralPct}%`}>
+          {histograma.bins.map((b, i) => (
+            <div class="col">
+              <div class="pila">
+                <div
+                  class="barra dentro"
+                  style={`height:${(histograma.en_dominio[i] / maxBarra) * 100}%`}
+                  title={`${histograma.en_dominio[i]} en dominio en ${b}–${(b + histograma.paso).toFixed(2)}`}
+                ></div>
+                <div
+                  class="barra fuera"
+                  style={`height:${(histograma.fuera[i] / maxBarra) * 100}%`}
+                  title={`${histograma.fuera[i]} fuera de dominio en ${b}–${(b + histograma.paso).toFixed(2)}`}
+                ></div>
+              </div>
+              <span class="tick mono">{b.toFixed(2)}</span>
+            </div>
+          ))}
+        </div>
+        <figcaption class="mono">
+          <span class="clave"><i class="c-dentro"></i>en dominio</span>
+          <span class="clave"><i class="c-fuera"></i>fuera de dominio</span>
+          <span class="clave"><i class="c-umbral"></i>umbral {informe.umbral}</span>
+        </figcaption>
+      </figure>
+
+      <hr />
+
+      <!-- ═══ Matriz de confusión ═══ -->
+      <h2>Matriz de confusión por tema</h2>
+      <p class="prose">
+        Por documento sería una matriz de 50×50 ilegible, así que está agrupada
+        por tema. Las filas son el tema que tocaba; las columnas, el que
+        devolvió el modelo. Todo lo que no está en la diagonal es un error.
+      </p>
+
+      <div class="matriz-scroll">
+        <table class="matriz mono">
+          <thead>
+            <tr>
+              <th scope="col"><span class="sr-only">tema esperado</span></th>
+              {temas.map((t) => <th scope="col" class="th-col"><span>{t}</span></th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {matriz.map((fila, i) => (
+              <tr>
+                <th scope="row">{temas[i]}</th>
+                {fila.map((v, j) => (
+                  <td
+                    class={v > 0 ? (i === j ? 'ok' : 'mal') : ''}
+                    style={v > 0 ? `--int:${v / maxCelda}` : ''}
+                    title={`esperado ${temas[i]} → devuelto ${temas[j]}: ${v}`}
+                  >
+                    {v > 0 ? v : ''}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <hr />
+
+      <!-- ═══ Fallos ═══ -->
+      <h2>Los fallos, uno a uno</h2>
+      {fallos.length === 0 ? (
+        <p class="prose">Ninguno en este entrenamiento. Sospechoso, más que bueno.</p>
+      ) : (
+        <ul class="fallos">
+          {fallos.map((f) => (
+            <li>
+              <p class="pregunta mono">«{f.pregunta}»</p>
+              <p class="detalle mono">
+                esperaba <span class="ok-txt">{f.esperado}</span> · devolvió
+                <span class="mal-txt"> {f.obtenido}</span> · score {f.score}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <hr />
+
+      <!-- ═══ Set completo ═══ -->
+      <details class="completo">
+        <summary class="eyebrow">ver el set de evaluación completo ({resultados.length} preguntas)</summary>
+        <div class="tabla-scroll">
+          <table class="tabla mono">
+            <thead>
+              <tr><th>pregunta</th><th>esperado</th><th>devuelto</th><th>score</th></tr>
+            </thead>
+            <tbody>
+              {resultados.map((r) => (
+                <tr class={r.acierto === false ? 'fila-mal' : ''}>
+                  <td>{r.pregunta}</td>
+                  <td>{r.esperado ?? <span class="nulo">— fuera de dominio</span>}</td>
+                  <td>{r.score < informe.umbral ? <span class="nulo">(rechazada)</span> : r.obtenido}</td>
+                  <td>{r.score}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <p class="mas"><a class="enlace" href="/model-card">← model card</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .eval { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+  h1 { margin-top: .5rem; }
+  .lede { font-size: 1.02rem; color: var(--fg); margin-top: 1.1rem; }
+  h2 { margin-top: 0; margin-bottom: .8rem; }
+  hr { margin-block: 2.8rem; }
+
+  .cifras {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem;
+    margin-top: 1.8rem;
+    padding: 1.1rem 1.3rem;
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radio);
+  }
+  .cifras > div { display: flex; flex-direction: column; gap: .25rem; }
+  .cifras dt { font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-3); }
+  .cifras dd { font-size: 1.15rem; color: var(--accent); }
+
+  /* ---- Histograma ---- */
+  .hist { margin-top: 1.8rem; }
+  .hist-barras {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 200px;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  /* La línea del umbral, dibujada por encima de las barras */
+  .hist-barras::after {
+    content: '';
+    position: absolute;
+    left: var(--umbral);
+    top: 0;
+    bottom: 1.4rem;
+    border-left: 2px dashed var(--warn);
+    z-index: 2;
+  }
+  .col {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    min-width: 0;
+  }
+  .pila { display: flex; align-items: flex-end; gap: 2px; height: 100%; }
+  .barra { flex: 1; min-height: 0; border-radius: 2px 2px 0 0; }
+  .barra.dentro { background: var(--accent); }
+  .barra.fuera { background: var(--warn); }
+  .tick {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1.15rem;
+    font-size: .6rem;
+    color: var(--fg-3);
+    text-align: center;
+  }
+
+  figcaption { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-top: 1rem; font-size: .72rem; color: var(--fg-3); }
+  .clave { display: inline-flex; align-items: center; gap: .4rem; }
+  .clave i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .c-dentro { background: var(--accent); }
+  .c-fuera { background: var(--warn); }
+  .c-umbral { border-top: 1px dashed var(--warn); height: 0 !important; width: 14px !important; border-radius: 0 !important; }
+
+  /* ---- Matriz ---- */
+  .matriz-scroll { overflow-x: auto; margin-top: 1.6rem; }
+  .matriz { border-collapse: collapse; font-size: .7rem; }
+  .matriz th { font-weight: 400; color: var(--fg-3); padding: .35rem .5rem; text-align: right; white-space: nowrap; }
+  .matriz .th-col { text-align: center; }
+  .matriz .th-col span {
+    display: inline-block;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    max-height: 90px;
+  }
+  .matriz td {
+    width: 34px; height: 34px;
+    text-align: center;
+    border: 1px solid var(--rule);
+    color: var(--fg-3);
+  }
+  .matriz td.ok {
+    background: color-mix(in srgb, var(--accent) calc(var(--int) * 65%), transparent);
+    color: var(--fg);
+  }
+  .matriz td.mal {
+    background: color-mix(in srgb, var(--warn) calc(var(--int) * 70%), transparent);
+    color: var(--fg);
+  }
+
+  /* ---- Fallos ---- */
+  .fallos { list-style: none; margin-top: 1.4rem; }
+  .fallos li { padding: .9rem 0; border-top: 1px solid var(--rule); }
+  .fallos li:last-child { border-bottom: 1px solid var(--rule); }
+  .pregunta { font-size: .88rem; color: var(--fg); }
+  .detalle { font-size: .75rem; color: var(--fg-3); margin-top: .35rem; }
+  .ok-txt { color: var(--accent); }
+  .mal-txt { color: var(--warn); }
+
+  /* ---- Tabla completa ---- */
+  .completo { margin-top: 1rem; }
+  .completo summary { cursor: pointer; padding: .6rem 0; }
+  .tabla-scroll { overflow-x: auto; margin-top: 1rem; }
+  .tabla { width: 100%; border-collapse: collapse; font-size: .72rem; }
+  .tabla th {
+    text-align: left;
+    font-weight: 500;
+    color: var(--fg-3);
+    padding: .5rem .7rem;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  .tabla td { padding: .45rem .7rem; border-bottom: 1px solid var(--rule); color: var(--fg-2); vertical-align: top; }
+  .tabla tr.fila-mal td { color: var(--warn); }
+  .nulo { color: var(--fg-3); font-style: italic; }
+
+  .mas { margin-top: 2.5rem; }
+
+  @media (max-width: 640px) {
+    .hist-barras { height: 150px; }
+    .tick { display: none; }
+  }
+</style>

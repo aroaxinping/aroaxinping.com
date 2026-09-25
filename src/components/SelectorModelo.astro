@@ -1,0 +1,160 @@
+---
+/**
+ * Selector de variante, en plan producto de IA: aroa-1-flash es el retrieval
+ * de siempre y aroa-1-pro le pone encima un LLM pequeño que redacta a partir
+ * de los mismos documentos. Las fichas están a la vista porque la diferencia
+ * importa: una son 414 KB y funciona en cualquier móvil, la otra son cientos
+ * de megas y pide WebGPU.
+ */
+const variantes = [
+  {
+    id: 'aroa-1-flash',
+    titulo: 'flash',
+    resumen: 'Recuperación pura. Devuelve el documento del corpus que mejor encaja.',
+    specs: ['414 KB', '~10 ms', 'cualquier navegador'],
+  },
+  {
+    id: 'aroa-1-pro',
+    titulo: 'pro',
+    resumen: 'Lo mismo, pero un LLM local redacta la respuesta con esos documentos delante.',
+    specs: ['~700 MB', 'primera carga lenta', 'requiere WebGPU'],
+  },
+];
+---
+
+<div class="selector" id="selector" hidden>
+  <!-- Sin esto, el texto que hay debajo del selector se ve al lado del
+       desplegable en vez de detrás: técnicamente no hay solape (el panel es
+       opaco), pero visualmente sí lo parece. El scrim separa una cosa de
+       la otra. -->
+  <div class="sel-scrim" id="selScrim" hidden></div>
+
+  <button
+    type="button"
+    id="selBtn"
+    class="sel-btn mono"
+    aria-haspopup="listbox"
+    aria-expanded="false"
+  >
+    <span class="sel-nombre" id="selNombre">aroa-1-flash</span>
+    <span class="sel-flecha" aria-hidden="true">▾</span>
+  </button>
+
+  <div class="sel-panel" id="selPanel" role="listbox" hidden>
+    {variantes.map((v) => (
+      <button
+        type="button"
+        class="opcion"
+        role="option"
+        data-variante={v.id}
+        aria-selected={v.id === 'aroa-1-flash'}
+      >
+        <span class="op-cabecera">
+          <span class="op-id mono">{v.id}</span>
+          <span class="op-estado mono" data-estado></span>
+        </span>
+        <span class="op-resumen">{v.resumen}</span>
+        <span class="op-specs mono">
+          {v.specs.map((s) => <span>{s}</span>)}
+        </span>
+      </button>
+    ))}
+
+    <div class="sel-progreso" id="selProgreso" hidden>
+      <div class="barra"><i id="selBarra"></i></div>
+      <p class="mono" id="selEstado">preparando…</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .selector { position: relative; margin-bottom: 1.1rem; }
+
+  .sel-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    background: color-mix(in srgb, var(--bg) 65%, transparent);
+    backdrop-filter: blur(2px);
+    animation: sel-aparece .15s ease;
+  }
+  @keyframes sel-aparece { from { opacity: 0; } to { opacity: 1; } }
+
+  .sel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: .76rem;
+    color: var(--fg-2);
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: .35rem .8rem;
+    cursor: pointer;
+    transition: border-color .18s;
+  }
+  .sel-btn:hover { border-color: var(--accent); }
+  .sel-nombre { color: var(--accent); }
+  .sel-flecha { font-size: .6rem; color: var(--fg-3); }
+
+  /* [hidden] y este display:flex tienen la misma especificidad; sin este
+     override, quién gana depende del orden de carga del CSS — frágil, y es
+     justo lo que hacía que el panel apareciera abierto sin haberlo abierto
+     nadie. Esta regla, con más especificidad, deja de dejarlo al azar. */
+  .sel-panel[hidden] { display: none; }
+
+  .sel-panel {
+    position: absolute;
+    top: calc(100% + .4rem);
+    left: 0;
+    z-index: 6;
+    width: min(360px, calc(100vw - 2.5rem));
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+    padding: .35rem;
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radio);
+    box-shadow: 0 10px 30px rgb(0 0 0 / .3);
+  }
+
+  .opcion {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: 7px;
+    padding: .65rem .7rem;
+    cursor: pointer;
+    font: inherit;
+  }
+  .opcion:hover { background: var(--bg-3); }
+  .opcion[aria-selected='true'] { background: var(--bg-3); }
+  .opcion:disabled { opacity: .55; cursor: not-allowed; }
+  .opcion:disabled:hover { background: none; }
+
+  .op-cabecera { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; }
+  .op-id { font-size: .76rem; color: var(--fg); }
+  .opcion[aria-selected='true'] .op-id { color: var(--accent); }
+  .op-estado { font-size: .62rem; color: var(--fg-3); }
+
+  .op-resumen { font-size: .72rem; line-height: 1.5; color: var(--fg-2); }
+  .op-specs { display: flex; flex-wrap: wrap; gap: .5rem; font-size: .62rem; color: var(--fg-3); }
+  .op-specs span::before { content: '· '; }
+  .op-specs span:first-child::before { content: ''; }
+
+  .sel-progreso { padding: .5rem .7rem .3rem; }
+  .barra { height: 4px; background: var(--bg-3); border-radius: 999px; overflow: hidden; }
+  .barra i {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--accent);
+    border-radius: 999px;
+    transition: width .3s ease;
+  }
+  .sel-progreso p { font-size: .64rem; color: var(--fg-3); margin-top: .4rem; }
+</style>

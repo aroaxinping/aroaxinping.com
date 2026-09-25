@@ -1,0 +1,119 @@
+/* ═══════════════════════════════════════════════════════════════
+   aroa.ai — interfaz de aroa-1
+   Dirección: consola de modelo. Oscuro por defecto, mono para todo
+   lo que es maquinaria (metadatos, scores, nav) y una tipografía de
+   texto legible para lo que dice el modelo, que es lo único que la
+   persona ha venido a leer. Un solo acento.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg:        #0b0d10;
+  --bg-2:      #12151a;
+  --bg-3:      #191d24;
+  --fg:        #e8eaed;
+  --fg-2:      #9aa3ae;
+  --fg-3:      #626c78;
+  --rule:      #232830;
+
+  /* Rosa pastel, desaturado a propósito: acento, no grito */
+  --accent:    #f2aec6;
+  --accent-2:  #e88fae;
+  --warn:      #f0b429;
+
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --measure: 68ch;
+  --pad-x:   clamp(1rem, 4vw, 2.5rem);
+  --radio:   10px;
+}
+
+[data-theme='light'] {
+  --bg:        #fbfbfa;
+  --bg-2:      #f2f2f0;
+  --bg-3:      #e8e8e5;
+  --fg:        #14171a;
+  --fg-2:      #545c66;
+  --fg-3:      #8b939d;
+  --rule:      #e0e0dc;
+  --accent:    #c23f6d;
+  --accent-2:  #a52f59;
+  --warn:      #b45309;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-family: var(--font-body);
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+body { min-height: 100dvh; display: flex; flex-direction: column; }
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* ---- Retícula ---- */
+.wrap { width: 100%; max-width: 1140px; margin-inline: auto; padding-inline: var(--pad-x); }
+.prose { max-width: var(--measure); }
+.prose p + p { margin-top: 1.05em; }
+
+/* ---- Tipografía ---- */
+.mono { font-family: var(--font-mono); }
+
+h1, h2, h3 { font-weight: 600; letter-spacing: -.015em; line-height: 1.15; }
+h1 { font-size: clamp(1.9rem, 5vw, 2.9rem); }
+h2 { font-size: clamp(1.3rem, 3vw, 1.7rem); }
+h3 { font-size: 1.02rem; }
+
+p, li { line-height: 1.65; color: var(--fg-2); }
+
+/* Rótulo de sección con aire de comentario de código */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+/* Etiqueta pequeña de dato: `score 0.42`, `50 docs` */
+.tag {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--fg-3);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: .18rem .6rem;
+  white-space: nowrap;
+}
+
+.enlace {
+  color: var(--accent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  transition: border-color .18s;
+}
+.enlace:hover { border-bottom-color: var(--accent); }
+
+hr { border: 0; border-top: 1px solid var(--rule); }
+
+::selection { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+
+/* Barra de scroll discreta, que aquí se ve mucho */
+* { scrollbar-width: thin; scrollbar-color: var(--rule) transparent; }
+*::-webkit-scrollbar { width: 9px; height: 9px; }
+*::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 999px; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

@@ -1,0 +1,39 @@
+---
+const redes = [
+  { href: 'https://linkedin.com/in/aroaxinping', texto: 'linkedin' },
+  { href: 'https://github.com/aroaxinping', texto: 'github' },
+  { href: 'https://tiktok.com/@aroaxinping', texto: 'tiktok' },
+  { href: 'https://instagram.com/aroaxinping', texto: 'instagram' },
+];
+const anio = new Date().getFullYear();
+---
+<footer class="pie">
+  <div class="wrap pie-in">
+    <p class="firma mono">aroa-1 · © {anio}</p>
+
+    <ul class="redes mono">
+      {redes.map((r) => (
+        <li><a class="enlace" href={r.href} target="_blank" rel="noopener">{r.texto}</a></li>
+      ))}
+    </ul>
+
+    <p class="nota mono">sin backend · sin analytics</p>
+  </div>
+</footer>
+
+<style>
+  .pie { border-top: 1px solid var(--rule); padding-block: 2rem; }
+  .pie-in {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    font-size: .78rem;
+  }
+  .firma { color: var(--fg-3); }
+  .redes { display: flex; flex-wrap: wrap; gap: 1.2rem; list-style: none; }
+  .redes a { color: var(--fg-3); }
+  .redes a:hover { color: var(--accent); }
+  .nota { color: var(--fg-3); }
+</style>

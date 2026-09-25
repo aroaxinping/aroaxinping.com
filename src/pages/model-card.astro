@@ -1,0 +1,179 @@
+---
+import Base from '../layouts/Base.astro';
+import modelo from '../../public/model/aroa-1.json';
+
+const m = modelo.metricas;
+---
+
+<Base
+  title="model card — aroa-1"
+  description="Documentación de aroa-1: datos de entrenamiento, decisiones de diseño, evaluación, capacidades y limitaciones."
+>
+  <section class="card">
+    <div class="wrap prose">
+      <p class="eyebrow">model card</p>
+      <h1>aroa-1</h1>
+      <p class="lede">
+        Esto es lo que en un repo de machine learning normal sería el
+        <code class="mono">README</code> del modelo: qué es, con qué se entrenó,
+        qué decisiones se tomaron y dónde no hay que fiarse de él. Aquí también
+        es, sin metáfora, mi «sobre mí».
+      </p>
+
+      <div class="metricas mono">
+        <div><dt>versión</dt><dd>{modelo.version}</dd></div>
+        <div><dt>arquitectura</dt><dd>{modelo.arquitectura}</dd></div>
+        <div><dt>documentos</dt><dd>{m.documentos}</dd></div>
+        <div><dt>vocabulario</dt><dd>{m.vocabulario} términos</dd></div>
+        <div><dt>accuracy@1</dt><dd>{Math.round(m.accuracy_top1 * 100)}%</dd></div>
+        <div><dt>entrenado</dt><dd>{modelo.entrenado}</dd></div>
+      </div>
+
+      <hr />
+
+      <h2>Descripción</h2>
+      <p>
+        aroa-1 es un modelo de <strong>recuperación de información</strong>, no
+        un modelo de lenguaje. Convierte cada pregunta en un vector TF-IDF
+        (palabras 1-2 gramas + n-gramas de caracteres 3-5, para aguantar tildes
+        ausentes y erratas), lo compara por similitud del coseno contra un
+        corpus de documentos escritos a mano, y devuelve el más parecido. No
+        genera texto nuevo: no puede decir nada que no esté ya escrito en
+        alguno de sus documentos.
+      </p>
+      <p>
+        Lo entrenó Aroa Xinping, analista de datos en formación y creadora de
+        contenido tech, con scikit-learn. La inferencia corre entera en tu
+        navegador, sin servidor ni API: el artefacto se descarga como un JSON
+        de menos de 1 MB y a partir de ahí no vuelve a salir nada de tu
+        dispositivo.
+      </p>
+
+      <h2>Datos de entrenamiento</h2>
+      <p>
+        El corpus es la trayectoria real de una persona, no un dataset
+        genérico: bachiller científico, luego artístico, tres años de Bellas
+        Artes, dos años de FP de Dietética y acondicionamiento físico, y ahora
+        el Grado en Data Science en la UOC junto al bootcamp de Data Analytics
+        de Ironhack. Cada etapa se dejó por un motivo concreto, no por
+        indecisión — y esos motivos están en el corpus tal cual se
+        preguntarían.
+      </p>
+      <p>
+        Encima de la historia académica, el corpus cubre proyectos de datos
+        propios, opiniones técnicas, cómo funciona su contenido en TikTok e
+        Instagram, y metadatos sobre el propio modelo: cómo está hecho, qué
+        sabe y qué no. Ningún documento sale de scraping ni de una fuente
+        externa — todos están escritos por la persona a la que describen.
+      </p>
+
+      <h2>Decisiones de diseño</h2>
+      <p>
+        <strong>TF-IDF y no un LLM.</strong> Un modelo de lenguaje grande
+        detrás de este dominio habría sido una API ajena con su nombre
+        encima. TF-IDF es más simple, pero cada pieza — vectorizador, pesos,
+        umbral de decisión — es enteramente suya, entrenada por ella sobre sus
+        propios datos.
+      </p>
+      <p>
+        <strong>Inferencia en el navegador y no en un servidor.</strong> Sin
+        backend no hay coste por visita, no hay latencia de red y no hay datos
+        de nadie saliendo de su dispositivo. El coste es que el modelo tiene
+        que caber en un JSON razonable: por eso los vectores se podan y se
+        redondean antes de exportarlos.
+      </p>
+      <p>
+        <strong>Umbral de rechazo calibrado, no fijo a ojo.</strong> El
+        entrenamiento evalúa el modelo contra un set de preguntas parafraseadas
+        y otro de preguntas fuera de dominio, y elige el corte que mejor
+        equilibra aceptar lo que sí sabe y rechazar lo que no. Prefiere
+        callarse a inventar.
+      </p>
+      <h2>Variantes</h2>
+      <p>
+        <strong>aroa-1-flash</strong> es la de por defecto: recuperación pura,
+        414 KB, unos 10 ms por pregunta y funciona en cualquier navegador. Es
+        el modelo de verdad de este sitio.
+      </p>
+      <p>
+        <strong>aroa-1-pro</strong> añade encima un LLM pequeño
+        (Llama-3.2-1B vía WebGPU) que redacta la respuesta usando los
+        documentos que ya ha elegido el retrieval — RAG, no una conversación
+        libre: el LLM no aporta datos, sólo los reformula. Hay que activarla a
+        mano porque son unos 700 MB de descarga y necesita WebGPU. Si el
+        retrieval no llega al umbral, la variante pro tampoco genera nada: se
+        da el mismo «no lo sé», porque darle contexto vacío a un LLM para que
+        improvise es exactamente lo que este sitio promete no hacer.
+      </p>
+
+      <h2>Evaluación</h2>
+      <p>
+        El set de prueba tiene preguntas parafraseadas para cada documento del
+        corpus (nadie pregunta las cosas literalmente igual que se escribieron)
+        más un bloque de preguntas fuera de dominio, ninguna reutilizada del
+        corpus de entrenamiento. Con eso: <strong>accuracy@1 de {Math.round(m.accuracy_top1 * 100)}%</strong> sobre
+        {m.preguntas_evaluadas} preguntas en dominio, y el umbral rechaza el
+        {Math.round((m.rechazo_fuera_dominio ?? 1) * 100)}% de las {m.fuera_de_dominio} preguntas fuera de dominio.
+        Donde falla suele ser en preguntas muy cortas o muy genéricas, donde
+        varios documentos compiten por el mismo puñado de palabras.
+      </p>
+      <p>
+        No hace falta que te fíes de estos números: el set entero, la matriz de
+        confusión y todos los fallos están publicados en
+        <a class="enlace" href="/eval">/eval</a>.
+      </p>
+
+      <h2>Capacidades</h2>
+      <ul>
+        <li>Responde sobre la trayectoria, los estudios, los proyectos y las opiniones técnicas del corpus.</li>
+        <li>Tolera preguntas sin tildes, con erratas leves o formuladas de forma distinta al documento original.</li>
+        <li>Enseña su propio score de confianza en cada respuesta: nada de caja negra.</li>
+        <li>Corre offline una vez descargado el artefacto; no depende de ninguna API externa.</li>
+        <li>Acepta preguntas por voz (Web Speech API del navegador) en los navegadores que la soportan; el botón sólo aparece si tu navegador la tiene.</li>
+      </ul>
+
+      <h2>Limitaciones y sesgos</h2>
+      <ul>
+        <li>No tiene memoria entre preguntas: cada consulta se resuelve desde cero, sin contexto de la conversación.</li>
+        <li>Sólo sabe lo que hay en su corpus — unas decenas de documentos sobre la vida de una sola persona, no una base de conocimiento general.</li>
+        <li>No genera texto nuevo (salvo en el modo generativo opcional): si la pregunta no encaja con ningún documento, lo dice.</li>
+        <li>Está sesgado hacia las opiniones de quien lo entrenó, porque los escribió ella. No es neutral y no pretende serlo.</li>
+        <li>El corpus tiene entradas marcadas como pendientes de revisión: son mi mejor estimación de su voz, no palabras suyas verificadas una a una.</li>
+      </ul>
+
+      <h2>Uso previsto</h2>
+      <p>
+        Portfolio y punto de contacto: conocer su trayectoria, ver sus
+        proyectos, valorar una colaboración. Para prensa, colaboraciones o
+        contratación, el propio modelo puede darte su contacto — pregúntaselo.
+      </p>
+      <p class="mas"><a class="enlace" href="/">← volver a hablar con aroa-1</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .card { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+  h1 { margin-top: .5rem; }
+  .lede { font-size: 1.05rem; color: var(--fg); margin-top: 1.1rem; }
+  .lede code { font-size: .85em; background: var(--bg-2); padding: .1em .4em; border-radius: 4px; }
+
+  .metricas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1.1rem 1.3rem;
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radio);
+  }
+  .metricas > div { display: flex; flex-direction: column; gap: .25rem; }
+  .metricas dt { font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-3); }
+  .metricas dd { font-size: .95rem; color: var(--fg); }
+
+  h2 { margin-top: 2.6rem; margin-bottom: .9rem; }
+  ul { padding-left: 1.2rem; }
+  li { margin-top: .5rem; }
+  .mas { margin-top: 2.5rem; }
+</style>

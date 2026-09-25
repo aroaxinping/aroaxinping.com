@@ -1,0 +1,73 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+const url = new URL(Astro.url.pathname, Astro.site).href;
+---
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Aroa Xinping" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+    />
+
+    <script is:inline>
+      /* Antes de pintar, para que no haya destello de tema equivocado.
+         aroa-1 nace en oscuro: es una consola, no un papel. */
+      (function () {
+        var g = localStorage.getItem('tema');
+        var claro = g === 'light';
+        if (claro) document.documentElement.setAttribute('data-theme', 'light');
+      })();
+    </script>
+  </head>
+
+  <body>
+    <a href="#main" class="sr-only">Saltar al contenido</a>
+    <Nav />
+    <main id="main" style="flex:1">
+      <slot />
+    </main>
+    <Footer />
+
+    <script is:inline>
+      (function () {
+        var b = document.getElementById('temaBtn');
+        if (!b) return;
+        b.addEventListener('click', function () {
+          var claro = document.documentElement.getAttribute('data-theme') === 'light';
+          if (claro) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('tema', 'dark');
+          } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('tema', 'light');
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

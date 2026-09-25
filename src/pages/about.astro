@@ -1,0 +1,523 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Coordenadas y conexiones tal cual el about.html original: es un layout que
+// ya se probó y se ve bien, no hacía falta recalcularlo.
+const nodos = [
+  { id: 'datos', grupo: 'datos', x: 572.0, y: 381.7, r: 17.0, label: 'datos' },
+  { id: 'python', grupo: 'datos', x: 522.1, y: 351.9, r: 9.5, label: 'Python' },
+  { id: 'sql', grupo: 'datos', x: 736.8, y: 412.8, r: 8.0, label: 'SQL' },
+  { id: 'estadistica', grupo: 'datos', x: 521.1, y: 470.0, r: 8.0, label: 'estadística' },
+  { id: 'viz', grupo: 'datos', x: 409.2, y: 435.5, r: 9.5, label: 'visualización' },
+  { id: 'uoc', grupo: 'datos', x: 682.5, y: 304.2, r: 11.0, label: 'UOC' },
+  { id: 'ironhack', grupo: 'datos', x: 810.0, y: 359.8, r: 8.0, label: 'Ironhack' },
+  { id: 'bellasartes', grupo: 'diseno', x: 90.0, y: 436.1, r: 8.0, label: 'Bellas Artes' },
+  { id: 'diseno', grupo: 'diseno', x: 225.2, y: 387.2, r: 12.5, label: 'diseño' },
+  { id: 'pixelart', grupo: 'diseno', x: 96.3, y: 385.1, r: 9.5, label: 'pixel art' },
+  { id: 'estaweb', grupo: 'diseno', x: 333.1, y: 360.7, r: 11.0, label: 'esta web' },
+  { id: 'easter', grupo: 'diseno', x: 179.0, y: 332.3, r: 9.5, label: 'easter eggs' },
+  { id: 'contenido', grupo: 'contenido', x: 510.8, y: 291.9, r: 12.5, label: 'contenido' },
+  { id: 'tiktok', grupo: 'contenido', x: 600.6, y: 305.3, r: 9.5, label: 'TikTok' },
+  { id: 'instagram', grupo: 'contenido', x: 564.7, y: 241.5, r: 8.0, label: 'Instagram' },
+  { id: 'documentar', grupo: 'contenido', x: 449.2, y: 359.1, r: 9.5, label: 'documentar' },
+  { id: 'skincare', grupo: 'contenido', x: 437.7, y: 205.9, r: 8.0, label: 'skincare' },
+  { id: 'gaming', grupo: 'vida', x: 372.2, y: 167.8, r: 9.5, label: 'gaming' },
+  { id: 'setup', grupo: 'vida', x: 555.1, y: 117.0, r: 9.5, label: 'setup' },
+  { id: 'musica', grupo: 'vida', x: 679.1, y: 90.0, r: 8.0, label: 'música' },
+  { id: 'techretro', grupo: 'vida', x: 240.3, y: 269.3, r: 9.5, label: 'tech retro' },
+  { id: 'cafe', grupo: 'vida', x: 680.2, y: 171.8, r: 9.5, label: 'café' },
+];
+
+const aristas = [
+  ['bellasartes', 'diseno'], ['bellasartes', 'pixelart'], ['diseno', 'viz'],
+  ['diseno', 'estaweb'], ['diseno', 'pixelart'], ['diseno', 'techretro'],
+  ['viz', 'datos'], ['viz', 'estadistica'], ['datos', 'python'], ['datos', 'sql'],
+  ['datos', 'estadistica'], ['datos', 'uoc'], ['datos', 'contenido'],
+  ['python', 'estaweb'], ['python', 'uoc'], ['uoc', 'ironhack'], ['ironhack', 'sql'],
+  ['contenido', 'tiktok'], ['contenido', 'instagram'], ['contenido', 'documentar'],
+  ['contenido', 'skincare'], ['tiktok', 'datos'], ['instagram', 'tiktok'],
+  ['documentar', 'estaweb'], ['documentar', 'datos'], ['estaweb', 'easter'],
+  ['easter', 'techretro'], ['easter', 'pixelart'], ['gaming', 'setup'],
+  ['gaming', 'techretro'], ['setup', 'musica'], ['setup', 'cafe'],
+  ['musica', 'cafe'], ['cafe', 'uoc'], ['skincare', 'gaming'],
+];
+
+const coords = Object.fromEntries(nodos.map((n) => [n.id, n]));
+---
+
+<Base
+  title="about — Aroa Xinping"
+  description="Aroa Xinping: analista de datos en formación, creadora de contenido tech, y antes que nada, diseñadora. Mi historia, contada como documentación."
+>
+  <section class="about">
+    <div class="wrap prose">
+      <p class="eyebrow">about</p>
+      <h1>Aroa Xinping</h1>
+      <p class="lede">
+        aroa-1 documenta un modelo. Esto documenta a la persona que lo entrenó
+        — con el mismo formato, porque me sigue pareciendo el que mejor encaja.
+      </p>
+
+      <pre class="docstring mono"><code><span class="kw">class</span> Aroa:
+    <span class="str">"""Perfil · aroaxinping · {new Date().toISOString().slice(0,7)}</span>
+
+<span class="str">    Rol:            analista de datos en formación.</span>
+<span class="str">    Origen:         Bellas Artes → FP → Data Science (UOC).</span>
+<span class="str">    Uso previsto:   análisis, visualización y contarlo.</span>
+<span class="str">    Training data:  ver abajo.</span>
+<span class="str">    Caveats:        sesgada hacia lo que me interesa a mí.</span>
+<span class="str">    """</span></code></pre>
+
+      <hr />
+
+      <p class="eyebrow">[a] training data</p>
+      <h2>mi historia</h2>
+      <p>
+        Analista de datos en formación. Vengo del diseño: empecé en Bellas
+        Artes y llegué a los datos por el mismo motivo por el que empecé a
+        dibujar, que era entender cómo funcionan las cosas para después poder
+        contarlas.
+      </p>
+      <p>
+        Curso el Grado en Data Science en la UOC y el bootcamp de Data
+        Analytics de Ironhack a la vez. Trabajo sobre todo con Python (pandas,
+        NumPy), SQL y herramientas de visualización.
+      </p>
+      <p>
+        Mi primer proyecto real fue mi propia cuenta. Creo contenido sobre
+        datos y tecnología en TikTok e Instagram, y analizo mis propias
+        métricas para entender qué funciona y cómo se comporta una audiencia
+        — el proyecto donde practico todo lo que estudio, con datos reales y
+        consecuencias reales.
+      </p>
+      <p>
+        El diseño no se fue a ninguna parte: sigue aquí, mezclado con los
+        datos. Un análisis que nadie entiende no está terminado, y es justo
+        ahí donde las dos cosas se juntan.
+      </p>
+
+      <div class="gitlog mono">
+        <p class="gl-cmd"><span class="gl-accent">$</span> git log --graph aroa/data-journey</p>
+
+        <details class="gl-commit gl-commit--activo" open>
+          <summary>
+            <span class="gl-graph">*</span>
+            <span class="gl-hash">a1f3c9e</span>
+            <span class="gl-ref">(HEAD → main)</span>
+            <span class="gl-year">2026</span>
+            <span class="gl-titulo">ahora mismo</span>
+            <span class="gl-estado gl-estado--activo">● en curso</span>
+          </summary>
+          <div class="gl-diff">
+            <p>+ Grado en Data Science (UOC)</p>
+            <p>+ Bootcamp de Data Analytics (Ironhack)</p>
+            <p>+ aroa-1: entrené mi propio modelo para esta web</p>
+            <p>+ Estadística inferencial en proceso...</p>
+          </div>
+        </details>
+
+        <details class="gl-commit">
+          <summary>
+            <span class="gl-graph">*</span>
+            <span class="gl-hash">d8b02a1</span>
+            <span class="gl-year">2025</span>
+            <span class="gl-titulo">construyendo bases</span>
+            <span class="gl-estado gl-estado--hecho">✓ merged</span>
+          </summary>
+          <div class="gl-diff">
+            <p>+ Python: pandas, NumPy, Matplotlib</p>
+            <p>+ SQL desde cero hasta queries avanzadas</p>
+            <p>+ Primer proyecto real: mis propias métricas</p>
+            <p>+ Git y control de versiones</p>
+          </div>
+        </details>
+
+        <details class="gl-commit">
+          <summary>
+            <span class="gl-graph">*</span>
+            <span class="gl-hash">3e91fc7</span>
+            <span class="gl-year">2024</span>
+            <span class="gl-titulo">el principio</span>
+            <span class="gl-estado gl-estado--hecho">✓ merged</span>
+          </summary>
+          <div class="gl-diff">
+            <p>+ Fundamentos de diseño (Bellas Artes)</p>
+            <p>+ Primeras visualizaciones y dashboards</p>
+            <p>+ Descubrí que los datos cuentan historias</p>
+          </div>
+        </details>
+
+        <details class="gl-commit gl-commit--next">
+          <summary>
+            <span class="gl-graph">*</span>
+            <span class="gl-hash">???????</span>
+            <span class="gl-ref">(origin/feature/ml)</span>
+            <span class="gl-year">next</span>
+            <span class="gl-titulo">próximamente</span>
+            <span class="gl-estado gl-estado--next">⋯ pendiente</span>
+          </summary>
+          <div class="gl-diff">
+            <p>? Machine learning más allá de TF-IDF</p>
+            <p>? Voz clonada en todo el modelo, no sólo en flash</p>
+            <p># esta branch aún no existe. pronto.</p>
+          </div>
+        </details>
+      </div>
+
+      <hr />
+
+      <p class="eyebrow">[b] latent space</p>
+      <h2>el grafo</h2>
+      <p>
+        Lo que me interesa no cabe en una lista, porque las cosas se conectan
+        entre sí: Bellas Artes explica el diseño, el diseño explica cómo
+        visualizo, y el contenido acabó siendo de dónde saco mis propios
+        datos. Un grafo lo cuenta mejor. Arrastra los nodos o haz click en uno.
+      </p>
+
+      <div class="graph-viewport" id="graphViewport" tabindex="0" role="group" aria-label="Grafo de intereses, se puede desplazar y ampliar">
+        <svg class="graph" id="graphSvg" viewBox="0 0 900 560" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="grTitle grDesc">
+          <title id="grTitle">Grafo de lo que me interesa</title>
+          <desc id="grDesc">Veintidós nodos conectados entre sí en cuatro grupos: datos, diseño, contenido y vida.</desc>
+          <g id="graphStage">
+            {aristas.map(([a, b]) => (
+              <line class="gr-edge" data-a={a} data-b={b} x1={coords[a].x} y1={coords[a].y} x2={coords[b].x} y2={coords[b].y} />
+            ))}
+            {nodos.map((n) => (
+              <g class={`gr-node gr-node--${n.grupo}`} data-id={n.id} tabindex="0" role="button" aria-label={n.label}>
+                <circle class="gr-dot" cx={n.x} cy={n.y} r={n.r} />
+                <text class="gr-label" x={n.x} y={n.y + n.r + 15} text-anchor="middle">{n.label}</text>
+              </g>
+            ))}
+          </g>
+        </svg>
+
+        <div class="graph-controls">
+          <button type="button" class="gr-btn" data-gzoom="out" aria-label="Alejar">−</button>
+          <button type="button" class="gr-btn" data-gzoom="in" aria-label="Acercar">+</button>
+          <button type="button" class="gr-btn" data-gzoom="reset" aria-label="Ver el grafo entero">↺</button>
+        </div>
+        <p class="gr-hint mono">arrastra los nodos · pellizca o ctrl+rueda para zoom</p>
+      </div>
+
+      <div class="gr-detalle mono" id="grDetail">
+        <span class="gr-detalle-hint">// click en un nodo para ver qué es</span>
+      </div>
+
+      <hr />
+
+      <p class="mas"><a class="enlace" href="/model-card">→ documentación de aroa-1, el modelo</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .about { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+  h1 { margin-top: .5rem; }
+  .lede { font-size: 1.05rem; color: var(--fg); margin-top: 1.1rem; }
+  h2 { margin-top: .6rem; margin-bottom: .9rem; }
+  hr { margin-block: 2.6rem; }
+  .mas { margin-top: .5rem; font-size: .95rem; }
+
+  .docstring {
+    display: block;
+    margin-top: 1.8rem;
+    padding: 1.2rem 1.4rem;
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    font-size: .82rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: var(--fg-2);
+  }
+  /* El navegador fija font-family directamente en <code>, con más prioridad
+     que la herencia de .mono en el <pre> que lo envuelve. Hay que pisarlo. */
+  .docstring code { font-family: var(--font-mono); }
+  .docstring .kw { color: var(--accent); }
+  .docstring .str { color: var(--fg-3); }
+
+  /* ---- Timeline git log --graph ---- */
+  .gitlog { margin-top: 1.6rem; font-size: .82rem; }
+  .gl-cmd { color: var(--fg-3); margin-bottom: .9rem; }
+  .gl-accent { color: var(--accent); }
+
+  .gl-commit {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    margin-bottom: .5rem;
+    background: var(--bg-2);
+  }
+  .gl-commit summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: .6rem;
+    padding: .7rem .9rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .gl-commit summary::-webkit-details-marker { display: none; }
+  .gl-graph { color: var(--accent); }
+  .gl-hash { color: var(--fg-3); }
+  .gl-ref { color: var(--fg-3); font-size: .76rem; }
+  .gl-year { color: var(--fg); font-weight: 500; margin-left: auto; }
+  .gl-titulo { color: var(--fg-2); }
+  .gl-estado { font-size: .74rem; }
+  .gl-estado--activo { color: var(--accent); }
+  .gl-estado--hecho { color: var(--fg-3); }
+  .gl-estado--next { color: var(--warn); }
+  .gl-commit--activo { border-color: var(--accent); }
+  .gl-commit--next { opacity: .75; }
+
+  .gl-diff { padding: 0 .9rem .8rem 2.2rem; display: flex; flex-direction: column; gap: .25rem; }
+  .gl-diff p { color: var(--fg-2); font-size: .78rem; }
+
+  /* ---- Grafo ---- */
+  .graph-viewport {
+    position: relative;
+    margin-top: 1.6rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--radio);
+    background: var(--bg-2);
+    touch-action: none;
+    overflow: hidden;
+  }
+  .graph-viewport:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .graph-viewport.is-panning { cursor: grabbing; }
+  .graph { width: 100%; height: auto; display: block; cursor: grab; }
+
+  .gr-edge { stroke: var(--rule); stroke-width: 1; }
+  .gr-edge--on { stroke: var(--accent); stroke-width: 1.4; }
+  .gr-edge--far { opacity: .25; }
+
+  .gr-dot { stroke: var(--bg-2); stroke-width: 2; transition: r .15s; }
+  .gr-node--datos .gr-dot { fill: var(--accent); }
+  .gr-node--diseno .gr-dot { fill: var(--warn); }
+  .gr-node--contenido .gr-dot { fill: color-mix(in srgb, var(--accent) 55%, var(--fg-2)); }
+  .gr-node--vida .gr-dot { fill: var(--fg-3); }
+  .gr-label { fill: var(--fg-3); font-size: 11px; font-family: var(--font-mono); pointer-events: none; }
+  .gr-node { cursor: pointer; }
+  .gr-node:focus-visible .gr-dot { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .gr-node--on .gr-dot { stroke: var(--fg); }
+  .gr-node--on .gr-label { fill: var(--fg); }
+  .gr-node--near .gr-label { fill: var(--fg-2); }
+  .gr-node--far { opacity: .3; }
+
+  .graph-controls { position: absolute; top: .7rem; right: .7rem; display: flex; gap: .3rem; }
+  .gr-btn {
+    width: 26px; height: 26px;
+    display: grid; place-items: center;
+    font-size: .95rem;
+    color: var(--fg-2);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .gr-btn:hover { border-color: var(--accent); color: var(--fg); }
+  .gr-hint { position: absolute; bottom: .6rem; left: .8rem; font-size: .64rem; color: var(--fg-3); }
+
+  .gr-detalle {
+    min-height: 2.2rem;
+    margin-top: .8rem;
+    font-size: .8rem;
+    color: var(--fg-2);
+    padding: .6rem .8rem;
+    background: var(--bg-2);
+    border-left: 2px solid var(--rule);
+  }
+  .gr-detalle-hint { color: var(--fg-3); font-style: italic; }
+
+  @media (max-width: 640px) {
+    .gl-year { margin-left: 0; order: -1; width: 100%; font-size: .7rem; color: var(--fg-3); }
+  }
+</style>
+
+<script>
+  const motivos: Record<string, string> = {
+    datos: 'Encontrar patrones y poder respaldar una conclusión con evidencia y no con intuición. Es lo que me trajo aquí.',
+    python: 'Mi herramienta principal. pandas, NumPy, y todo lo que escribo para esta web y para mis análisis.',
+    sql: 'Lo que más me está costando y lo que más me está enseñando. Las window functions y yo seguimos negociando.',
+    estadistica: 'Inferencial ahora mismo. Tests de hipótesis, intervalos de confianza, ANOVA.',
+    viz: 'Donde el diseño y los datos se juntan de verdad. Un análisis que nadie entiende no está terminado.',
+    uoc: 'El grado en Data Science. Lo elegí porque me deja estudiar sin dejar de crear.',
+    ironhack: 'El bootcamp de Data Analytics. El salto de estudiar sola a hacerlo con estructura y plazos.',
+    bellasartes: 'De donde vengo. No fue un error ni un rodeo: es la razón de que me importe cómo se ve lo que hago.',
+    diseno: 'Nunca se fue. Sigue aquí, mezclado con los datos, decidiendo cómo se cuenta cada cosa.',
+    pixelart: 'Mi forma favorita de dibujar. Aparece en detalles de esta web y en medio de mis vídeos.',
+    estaweb: 'Mi proyecto que nunca termina. Antes era una web de pixel art; ahora es un modelo entrenado por mí. Donde pruebo cosas y procrastino de forma productiva.',
+    easter: 'Cosas escondidas para quien se moleste en mirar el código. Premios para quien se queda mirando.',
+    contenido: 'Empecé a publicar para obligarme a entender lo que estudiaba. Acabó siendo mi primer proyecto real.',
+    tiktok: 'Donde más gente me lee. También mi mayor fuente de datos propios.',
+    instagram: 'El otro lado. Cruzar las métricas de las dos redes es un proyecto en sí mismo.',
+    documentar: 'Enseñar el proceso sin editarlo demasiado, incluido lo que todavía no sé hacer.',
+    skincare: 'Rutinas, ingredientes, y la parte de mi contenido que no va de código.',
+    gaming: 'Mi forma de desconectar. También de donde salen la mitad de mis referencias visuales.',
+    setup: 'El monitor, los cascos, el sitio de trabajo que es parte del trabajo.',
+    musica: 'Masego, Tom Misch, Khruangbin, Men I Trust. Lo-fi cuando necesito concentrarme de verdad.',
+    techretro: 'El Nokia, los DVD, la estética de principios de los 2000. Nostalgia de algo que casi no viví.',
+    cafe: 'Dependencia declarada. Aparece en la documentación de mis proyectos como si fuera una librería.',
+  };
+
+  const vp = document.getElementById('graphViewport')!;
+  const svg = document.getElementById('graphSvg') as unknown as SVGSVGElement;
+  const stage = document.getElementById('graphStage')!;
+  const det = document.getElementById('grDetail')!;
+  if (vp && svg && stage) {
+    const nodos = [...vp.querySelectorAll<SVGGElement>('.gr-node')];
+    const lineas = [...vp.querySelectorAll<SVGLineElement>('.gr-edge')];
+
+    // Zoom y desplazamiento: se transforma el <g> interno, no la página.
+    const t = { x: 0, y: 0, k: 1 };
+    const MIN_K = 0.4, MAX_K = 5;
+    const aplicar = () => stage.setAttribute('transform', `translate(${t.x},${t.y}) scale(${t.k})`);
+    function aSvg(cx: number, cy: number) {
+      const m = svg.getScreenCTM();
+      if (!m) return { x: 0, y: 0 };
+      const p = svg.createSVGPoint();
+      p.x = cx; p.y = cy;
+      const r = p.matrixTransform(m.inverse());
+      return { x: r.x, y: r.y };
+    }
+    function zoomEn(f: number, cx: number, cy: number) {
+      let nk = t.k * f;
+      if (nk < MIN_K) { f = MIN_K / t.k; nk = MIN_K; }
+      if (nk > MAX_K) { f = MAX_K / t.k; nk = MAX_K; }
+      t.x = cx - f * (cx - t.x);
+      t.y = cy - f * (cy - t.y);
+      t.k = nk;
+      aplicar();
+    }
+    const centro = () => {
+      const r = vp.getBoundingClientRect();
+      return aSvg(r.left + r.width / 2, r.top + r.height / 2);
+    };
+    const reiniciar = () => { t.x = 0; t.y = 0; t.k = 1; aplicar(); };
+
+    vp.querySelector('[data-gzoom="in"]')?.addEventListener('click', () => { const c = centro(); zoomEn(1.25, c.x, c.y); });
+    vp.querySelector('[data-gzoom="out"]')?.addEventListener('click', () => { const c = centro(); zoomEn(0.8, c.x, c.y); });
+    vp.querySelector('[data-gzoom="reset"]')?.addEventListener('click', reiniciar);
+
+    vp.addEventListener('wheel', (e) => {
+      if (!e.ctrlKey && !e.metaKey) return;
+      e.preventDefault();
+      const p = aSvg(e.clientX, e.clientY);
+      zoomEn(e.deltaY < 0 ? 1.12 : 0.89, p.x, p.y);
+    }, { passive: false });
+
+    function vecinos(id: string) {
+      const v: Record<string, 1> = {};
+      lineas.forEach((l) => {
+        if (l.dataset.a === id) v[l.dataset.b!] = 1;
+        if (l.dataset.b === id) v[l.dataset.a!] = 1;
+      });
+      return v;
+    }
+    function limpiar() {
+      nodos.forEach((n) => n.classList.remove('gr-node--on', 'gr-node--near', 'gr-node--far'));
+      lineas.forEach((l) => l.classList.remove('gr-edge--on', 'gr-edge--far'));
+    }
+    function seleccionar(g: SVGGElement) {
+      const id = g.dataset.id!;
+      const v = vecinos(id);
+      limpiar();
+      nodos.forEach((n) => {
+        if (n.dataset.id === id) n.classList.add('gr-node--on');
+        else if (v[n.dataset.id!]) n.classList.add('gr-node--near');
+        else n.classList.add('gr-node--far');
+      });
+      lineas.forEach((l) => {
+        if (l.dataset.a === id || l.dataset.b === id) l.classList.add('gr-edge--on');
+        else l.classList.add('gr-edge--far');
+      });
+      det.textContent = motivos[id] || '';
+    }
+
+    const punteros = new Map<number, { x: number; y: number }>();
+    let arrastrando: SVGGElement | null = null;
+    let movido = false;
+    let previo: { x: number; y: number } | null = null;
+    let distIni = 0, kIni = 1;
+
+    function mueveNodo(g: SVGGElement, dx: number, dy: number) {
+      const c = g.querySelector('.gr-dot')!;
+      const tx = g.querySelector('.gr-label')!;
+      const nx = parseFloat(c.getAttribute('cx')!) + dx;
+      const ny = parseFloat(c.getAttribute('cy')!) + dy;
+      c.setAttribute('cx', String(nx));
+      c.setAttribute('cy', String(ny));
+      tx.setAttribute('x', String(nx));
+      tx.setAttribute('y', String(parseFloat(tx.getAttribute('y')!) + dy));
+      const id = g.dataset.id;
+      lineas.forEach((l) => {
+        if (l.dataset.a === id) { l.setAttribute('x1', String(nx)); l.setAttribute('y1', String(ny)); }
+        if (l.dataset.b === id) { l.setAttribute('x2', String(nx)); l.setAttribute('y2', String(ny)); }
+      });
+    }
+    function distancia() {
+      const v = [...punteros.values()];
+      return Math.hypot(v[0].x - v[1].x, v[0].y - v[1].y);
+    }
+    function medio() {
+      const v = [...punteros.values()];
+      return aSvg((v[0].x + v[1].x) / 2, (v[0].y + v[1].y) / 2);
+    }
+
+    vp.addEventListener('pointerdown', (e) => {
+      if ((e.target as Element).closest('.gr-btn')) return;
+      punteros.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      vp.setPointerCapture(e.pointerId);
+      if (punteros.size === 1) {
+        movido = false;
+        previo = aSvg(e.clientX, e.clientY);
+        arrastrando = (e.target as Element).closest('.gr-node');
+        vp.classList.add('is-panning');
+      } else if (punteros.size === 2) {
+        arrastrando = null;
+        distIni = distancia();
+        kIni = t.k;
+      }
+    });
+
+    vp.addEventListener('pointermove', (e) => {
+      if (!punteros.has(e.pointerId)) return;
+      punteros.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      if (punteros.size === 2 && distIni > 0) {
+        const c = medio();
+        const objetivo = Math.min(MAX_K, Math.max(MIN_K, kIni * (distancia() / distIni)));
+        zoomEn(objetivo / t.k, c.x, c.y);
+        return;
+      }
+      if (!previo) return;
+      const p = aSvg(e.clientX, e.clientY);
+      const dx = p.x - previo.x, dy = p.y - previo.y;
+      if (Math.abs(dx) > 1 || Math.abs(dy) > 1) movido = true;
+      if (arrastrando) mueveNodo(arrastrando, dx, dy);
+      else { t.x += dx; t.y += dy; aplicar(); }
+      previo = aSvg(e.clientX, e.clientY);
+    });
+
+    function soltar(e: PointerEvent) {
+      punteros.delete(e.pointerId);
+      if (punteros.size < 2) distIni = 0;
+      if (punteros.size === 0) { arrastrando = null; previo = null; vp.classList.remove('is-panning'); }
+    }
+    vp.addEventListener('pointerup', soltar);
+    vp.addEventListener('pointercancel', soltar);
+
+    vp.addEventListener('click', (e) => {
+      if (movido && !(e.target as Element).closest('.gr-btn')) e.stopPropagation();
+      movido = false;
+    }, true);
+
+    nodos.forEach((g) => {
+      g.addEventListener('click', () => seleccionar(g));
+      g.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); seleccionar(g); }
+      });
+    });
+  }
+</script>

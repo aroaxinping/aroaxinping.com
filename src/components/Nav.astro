@@ -1,0 +1,96 @@
+---
+const aqui = Astro.url.pathname;
+const activo = (href: string) => aqui === href || aqui === href + '/';
+---
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="/" class="marca mono" aria-label="Inicio">
+      <span class="punto" aria-hidden="true"></span>aroa.ai
+    </a>
+
+    <nav aria-label="Principal">
+      <ul>
+        <li>
+          <a href="/about" class="link mono" aria-current={activo('/about') ? 'page' : undefined}>
+            about
+          </a>
+        </li>
+        <li>
+          <a href="/model-card" class="link mono" aria-current={activo('/model-card') ? 'page' : undefined}>
+            model card
+          </a>
+        </li>
+        <li>
+          <a href="/eval" class="link mono" aria-current={activo('/eval') ? 'page' : undefined}>
+            eval
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <button id="temaBtn" class="tema" type="button" aria-label="Cambiar entre claro y oscuro">
+      <span aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 58px;
+  }
+  .marca {
+    font-size: .95rem;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .punto {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 70%, transparent);
+    flex-shrink: 0;
+  }
+  ul { display: flex; gap: clamp(1rem, 3vw, 2rem); list-style: none; }
+  li a.link { font-size: .8rem; color: var(--fg-3); }
+  li a.link:hover { color: var(--fg); }
+  li a.link[aria-current='page'] { color: var(--accent); }
+
+  .tema {
+    width: 28px; height: 28px;
+    display: grid; place-items: center;
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: border-color .2s;
+    flex-shrink: 0;
+  }
+  .tema:hover { border-color: var(--accent); }
+  .tema span {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: var(--fg);
+    box-shadow: inset -4px -2px 0 0 var(--bg);
+  }
+
+  @media (max-width: 560px) {
+    .nav-in { min-height: 52px; }
+    .marca { font-size: .85rem; }
+  }
+</style>
